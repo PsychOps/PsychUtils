@@ -22,7 +22,7 @@ async function main() { // The below three commented-out lines can be uncommente
 
     client.commands = new Discord.Collection();
     client.cooldowns = new Discord.Collection();
-    const prefix = /^<@!?944178547193425920>/ // Allows the use of mention prefixes
+    const prefix = /^<@!?952683114512138340>/ // Allows the use of mention prefixes
 
     const commandFolders = fs.readdirSync("./src/commands");
     for (const folder of commandFolders) {
