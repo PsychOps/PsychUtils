@@ -46,7 +46,7 @@ async function main() { // The below three commented-out lines can be uncommente
     client.on("ready", () => {
         client.user.setPresence({
             status: "dnd",
-            activities: [{ type: "WATCHING", name: 'you (prefix: @mention")' }],
+            activities: [{ type: "WATCHING", name: 'my usefulness' }],
         });
         console.log("I am ready!");
     });
