@@ -9,4 +9,10 @@ util.color = {
     orange: 0xfaa61a,
 };
 
+util.links = {
+    support: "https://discord.gg/Hh3W3y9VWK",
+    invite:
+      "#",
+  };
+
 module.exports = util;
