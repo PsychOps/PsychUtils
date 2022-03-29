@@ -1,4 +1,4 @@
-const config = require('../config.json');
+const { Snowflake } = require('discord.js');
 
 const util = {};
 
@@ -14,5 +14,17 @@ util.links = {
     invite:
       "#",
   };
+
+util.userMentionToId = (mention) => {
+    if (/^<@!?\d+>$/.test(mention)) {
+        return /** @type {Snowflake|null} */ mention.match(/^<@!?(\d+)>$/)[1];
+    }
+    else if(/^\d+$/.test(mention)) {
+        return mention;
+    }
+    else {
+        return null;
+    }
+};
 
 module.exports = util;
