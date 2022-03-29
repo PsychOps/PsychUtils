@@ -18,6 +18,7 @@
   "homepage": "https://github.com/PsychOps/PsychUtils#readme",
   "dependencies": {
     "discord.js": "^13.6.0",
-    "fs": "^0.0.1-security"
+    "fs": "^0.0.1-security",
+    "mysql2": "^2.3.3"
   }
 }
