@@ -4,12 +4,12 @@ const Discord = require("discord.js"); //
 const { Client, Intents } = require("discord.js");
 const config = require("./config.json");
 const fs = require("fs"); // To get the correspondent file paths
-//const mysql = require('mysql2/promise') // Remove first two slashes if planning to use mysql
+const mysql = require('mysql2/promise') // Remove first two slashes if planning to use mysql
 
 async function main() { // The below three commented-out lines can be uncommented when using mysql
-    //const database = await mysql.createConnection(config.database);
+    const database = await mysql.createConnection(config.database);
     //create any tables needed if they don't already exist
-    //await database.execute("CREATE TABLE IF NOT EXISTS `example` (`guild_id` char(18) PRIMARY KEY, `some_text_thing` TEXT NOT NULL)")
+    await database.execute("CREATE TABLE IF NOT EXISTS `balance` (`user_id` char(18) PRIMARY KEY, `wallet` INT NOT NULL, `bank` INT NOT NULL)")
 
     const client = new Client({
         intents: [
@@ -104,7 +104,7 @@ async function main() { // The below three commented-out lines can be uncommente
         setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
         try {
-            command.execute(message, args, client); // Add ", database" behind client when using databases
+            command.execute(message, args, client, database); // Add ", database" behind client when using databases
             console.log(`Command "${command.name}" was executed by ${message.author.tag} (${message.author.id})`)
         } catch (error) {
             console.error(error);
