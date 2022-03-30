@@ -19,7 +19,7 @@ module.exports = {
     async execute(message, args, client) {
         let user = util.userMentionToId(args[0]);
         if (user === message.author.id) {
-            return await message.reply(`You can't pay yourself.`)
+            return await message.reply(`You can't pay yourself.`);
         }
         if (!(user instanceof Discord.User)) {
             try {
@@ -34,24 +34,24 @@ module.exports = {
         }
 
         if (!args[1]) {
-            return await message.reply(`You need to tell us what you want to transfer to them.`)
+            return await message.reply(`You need to tell us what you want to transfer to them.`);
         }
 
         const database = await mysql.createConnection(config.database);
-        const balancegiv = await database.query("SELECT wallet FROM balance WHERE user_id = ?", [message.author.id])
+        const balancegiv = await database.query("SELECT wallet FROM balance WHERE user_id = ?", [message.author.id]);
 
         if (balancegiv[0][0] == undefined) {
             const embed = new Discord.MessageEmbed()
                 .setAuthor(message.author.tag, message.author.avatarURL())
                 .setDescription("You do not have a profile yet.\n*Start by using commands such as `work`*")
-                .setColor(util.color.red)
-            await message.reply( { embeds: [embed] } )
+                .setColor(util.color.red);
+            await message.reply( { embeds: [embed] } );
         }
 
-        console.log(balancegiv[0][0]['wallet'])
+        console.log(balancegiv[0][0]['wallet']);
 
         if (balancegiv[0][0]['wallet'] < args[1] || 1 > args[1]) {
-            return await message.reply(`You only have \`⌬ ${balancegiv[0][0]['wallet']}\`. You can't even afford this much yourself??`)
+            return await message.reply(`You only have \`⌬ ${balancegiv[0][0]['wallet']}\`. You can't even afford this much yourself??`);
         }
 
         const row = new Discord.MessageActionRow()
@@ -85,24 +85,24 @@ module.exports = {
             } else {
 
                 if (i.customId === 'yes') {
-                    await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?) ON DUPLICATE KEY UPDATE user_id = ?", [user.id, 0, 0, user.id])
-                    const balancerec = await database.query("SELECT wallet FROM balance WHERE user_id = ?", [user.id])
+                    await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?) ON DUPLICATE KEY UPDATE user_id = ?", [user.id, 0, 0, user.id]);
+                    const balancerec = await database.query("SELECT wallet FROM balance WHERE user_id = ?", [user.id]);
                     console.log(balancerec[0][0]['wallet']);
-                    const balancegiv = await database.query("SELECT wallet FROM balance WHERE user_id = ?", [message.author.id])
+                    const balancegiv = await database.query("SELECT wallet FROM balance WHERE user_id = ?", [message.author.id]);
 
                     const newvaluerec = parseInt(balancerec[0][0]['wallet']) + parseInt(args[1]);
                     const newvaluegiv = balancegiv[0][0]['wallet'] - args[1];
-                    console.log(newvaluerec, newvaluegiv)
+                    console.log(newvaluerec, newvaluegiv);
 
-                    await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?) ON DUPLICATE KEY UPDATE wallet = ?", [message.author.id, newvaluegiv, 0, newvaluegiv])
-                    await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?) ON DUPLICATE KEY UPDATE wallet = ?", [user.id, newvaluerec, 0, newvaluerec])
+                    await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?) ON DUPLICATE KEY UPDATE wallet = ?", [message.author.id, newvaluegiv, 0, newvaluegiv]);
+                    await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?) ON DUPLICATE KEY UPDATE wallet = ?", [user.id, newvaluerec, 0, newvaluerec]);
                     try {
                         await i.update({content: `Transaction finished.`, components: []});
                     } catch (e) {
                         if (e.message.includes('acknowledged')) {
-                            return
+                            return;
                         } else {
-                            console.error(e)
+                            console.error(e);
                         }
                     }
                 }

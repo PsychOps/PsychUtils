@@ -32,20 +32,19 @@ module.exports = {
         let wallet;
         let bank;
         const database = await mysql.createConnection(config.database);
-        const balance = await database.query("SELECT wallet, bank FROM balance WHERE user_id = ?", [user.id])
+        const balance = await database.query("SELECT wallet, bank FROM balance WHERE user_id = ?", [user.id]);
 
         if (balance[0][0] === undefined) {
             const embed = new Discord.MessageEmbed()
                 .setAuthor(user.tag, user.avatarURL())
                 .setDescription("This user does not have a profile yet.\n*Start by using commands such as `work`*")
-                .setColor(util.color.red)
-            await message.reply( { embeds: [embed] } )
+                .setColor(util.color.red);
+            await message.reply( { embeds: [embed] } );
         } else {
             wallet = balance[0][0]["wallet"]
             bank = balance[0][0]["bank"]
 
             const embed = new Discord.MessageEmbed()
-
                 .setAuthor(user.username + '\'s balance', user.avatarURL())
                 .addFields(
                     /** @type {any} */ {name: 'Wallet', value: `\`⌬ ${wallet}\``, inline: true},
