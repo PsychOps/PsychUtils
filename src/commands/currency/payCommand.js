@@ -77,23 +77,38 @@ module.exports = {
 
         collector.on('collect', async i => {
 
-            if (i.customId === 'yes') {
-                const balancerec = await database.query("SELECT wallet FROM balance WHERE user_id = ?", [user.id])
-                const balancegiv = await database.query("SELECT wallet FROM balance WHERE user_id = ?", [message.author.id])
+            if (i.user.id !== message.author.id) {
+                const embed = new Discord.MessageEmbed()
+                    .setDescription("You Cannot Interact With This Message!")
+                    .setColor("RED");
+                return i.reply({embeds: [embed], ephemeral: true});
+            } else {
 
-                if (balancerec[0][0] == undefined) {
-                    await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?)", [user.id,0,0])
+                if (i.customId === 'yes') {
+                    await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?) ON DUPLICATE KEY UPDATE user_id = ?", [user.id, 0, 0, user.id])
+                    const balancerec = await database.query("SELECT wallet FROM balance WHERE user_id = ?", [user.id])
+                    console.log(balancerec[0][0]['wallet']);
+                    const balancegiv = await database.query("SELECT wallet FROM balance WHERE user_id = ?", [message.author.id])
+
+                    const newvaluerec = parseInt(balancerec[0][0]['wallet']) + parseInt(args[1]);
+                    const newvaluegiv = balancegiv[0][0]['wallet'] - args[1];
+                    console.log(newvaluerec, newvaluegiv)
+
+                    await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?) ON DUPLICATE KEY UPDATE wallet = ?", [message.author.id, newvaluegiv, 0, newvaluegiv])
+                    await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?) ON DUPLICATE KEY UPDATE wallet = ?", [user.id, newvaluerec, 0, newvaluerec])
+                    try {
+                        await i.update({content: `Transaction finished.`, components: []});
+                    } catch (e) {
+                        if (e.message.includes('acknowledged')) {
+                            return
+                        } else {
+                            console.error(e)
+                        }
+                    }
                 }
-
-                const newvaluerec = balancerec[0][0]['wallet'] + args[1];
-                const newvaluegiv = balancegiv[0][0]['wallet'] - args[1];
-
-                await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?) ON DUPLICATE KEY UPDATE wallet = ?", [message.author.id, newvaluegiv, 0, newvaluegiv])
-                await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?) ON DUPLICATE KEY UPDATE wallet = ?", [user.id, newvaluerec, 0, newvaluerec])
-                await i.update({content: `Transaction finished.`, components: []});
-            }
-            if (i.customId === 'no') {
-                await i.update({content: `Cancelling transaction...`, components: []});
+                if (i.customId === 'no') {
+                    await i.update({content: `Cancelling transaction...`, components: []});
+                }
             }
         });
 
