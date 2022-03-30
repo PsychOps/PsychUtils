@@ -17,7 +17,10 @@ module.exports = {
     cooldown: 5,
 
     async execute(message, args, client) {
-        let user = args.length ? util.userMentionToId(args[0]) : message.author;
+        let user = util.userMentionToId(args[0]);
+        if (user === message.author.id) {
+            return await message.reply(`You can't pay yourself.`)
+        }
         if (!(user instanceof Discord.User)) {
             try {
                 user = await client.users.fetch(user);
