@@ -39,6 +39,15 @@ module.exports = {
 
         const database = await mysql.createConnection(config.database);
         const balancegiv = await database.query("SELECT wallet FROM balance WHERE user_id = ?", [message.author.id])
+
+        if (balancegiv[0][0] == undefined) {
+            const embed = new Discord.MessageEmbed()
+                .setAuthor(message.author.tag, message.author.avatarURL())
+                .setDescription("You do not have a profile yet.\n*Start by using commands such as `work`*")
+                .setColor(util.color.red)
+            await message.reply( { embeds: [embed] } )
+        }
+
         console.log(balancegiv[0][0]['wallet'])
 
         if (balancegiv[0][0]['wallet'] < args[1] || 1 > args[1]) {
