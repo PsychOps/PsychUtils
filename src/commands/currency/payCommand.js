@@ -48,8 +48,6 @@ module.exports = {
             await message.reply( { embeds: [embed] } );
         }
 
-        console.log(balancegiv[0][0]['wallet']);
-
         if (balancegiv[0][0]['wallet'] < args[1] || 1 > args[1]) {
             return await message.reply(`You only have \`⌬ ${balancegiv[0][0]['wallet']}\`. You can't even afford this much yourself??`);
         }
@@ -87,12 +85,10 @@ module.exports = {
                 if (i.customId === 'yes') {
                     await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?) ON DUPLICATE KEY UPDATE user_id = ?", [user.id, 0, 0, user.id]);
                     const balancerec = await database.query("SELECT wallet FROM balance WHERE user_id = ?", [user.id]);
-                    console.log(balancerec[0][0]['wallet']);
                     const balancegiv = await database.query("SELECT wallet FROM balance WHERE user_id = ?", [message.author.id]);
 
                     const newvaluerec = parseInt(balancerec[0][0]['wallet']) + parseInt(args[1]);
                     const newvaluegiv = balancegiv[0][0]['wallet'] - args[1];
-                    console.log(newvaluerec, newvaluegiv);
 
                     await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?) ON DUPLICATE KEY UPDATE wallet = ?", [message.author.id, newvaluegiv, 0, newvaluegiv]);
                     await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?) ON DUPLICATE KEY UPDATE wallet = ?", [user.id, newvaluerec, 0, newvaluerec]);

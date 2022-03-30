@@ -26,7 +26,6 @@ module.exports = {
                 .setColor(util.color.red);
             await message.reply( { embeds: [embed] } );
         } else {
-            console.log(bank[0][0]['bank']);
             if (bank[0][0]['bank'] < args[0] || 1 > args[0]) {
                 return await message.reply(`You only have \`⌬ ${bank[0][0]['bank']}\` in your bank. `);
             }
@@ -39,7 +38,6 @@ module.exports = {
                 const offbankall = bank[0][0]['bank'] - bank[0][0]['bank'];
                 await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?) ON DUPLICATE KEY UPDATE bank = ?", [message.author.id, 0, offbankall, offbankall]);
                 const onwalletall = parseInt(wallet[0][0]['wallet']) + parseInt(bank[0][0]['bank']);
-                console.log(`wallet: ${onwalletall}\nbank: ${offbankall}`);
                 await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?) ON DUPLICATE KEY UPDATE wallet = ?", [message.author.id, onwalletall, 0, onwalletall]);
 
                 const embed = new Discord.MessageEmbed()
@@ -56,7 +54,6 @@ module.exports = {
                 const offbank = bank[0][0]['bank'] - args[0];
                 await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?) ON DUPLICATE KEY UPDATE bank = ?", [message.author.id, 0, offbank, offbank]);
                 const onwallet = parseInt(wallet[0][0]['wallet']) + parseInt(args[0]);
-                console.log(`wallet: ${onwallet}\nbank: ${offbank}`);
                 await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?) ON DUPLICATE KEY UPDATE wallet = ?", [message.author.id, onwallet, 0, onwallet]);
 
                 const embed = new Discord.MessageEmbed()
