@@ -1,7 +1,7 @@
 "use strict";
 
 const Discord = require("discord.js"); //
-const { Client, Intents } = require("discord.js");
+const { Client } = require("discord.js");
 const config = require("./config.json");
 const fs = require("fs"); // To get the correspondent file paths
 const mysql = require('mysql2/promise') // Remove first two slashes if planning to use mysql
