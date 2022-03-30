@@ -43,12 +43,14 @@ module.exports = {
         } else {
             wallet = balance[0][0]["wallet"]
             bank = balance[0][0]["bank"]
-            const returnmsg = `**Wallet:** ⌬ ${wallet}\n**Bank:** ⌬ ${bank}`
 
             const embed = new Discord.MessageEmbed()
 
                 .setAuthor(user.username + '\'s balance', user.avatarURL())
-                .setDescription(returnmsg)
+                .addFields(
+                    /** @type {any} */ {name: 'Wallet', value: `\`⌬ ${wallet}\``, inline: true},
+                    /** @type {any} */ {name: 'Bank', value: `\`⌬ ${bank}\``, inline: true}
+                )
                 .setColor(util.color.blue)
                 .setTimestamp();
 
