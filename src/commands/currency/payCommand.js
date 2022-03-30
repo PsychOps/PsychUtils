@@ -73,7 +73,7 @@ module.exports = {
 
         const filter = i => i.customId === 'yes' || 'no';
 
-        const collector = message.channel.createMessageComponentCollector({filter, time: 15000});
+        const collector = message.channel.createMessageComponentCollector({filter, time: 60000});
 
         collector.on('collect', async i => {
 
