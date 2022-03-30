@@ -51,7 +51,7 @@ module.exports = {
         console.log(balancegiv[0][0]['wallet'])
 
         if (balancegiv[0][0]['wallet'] < args[1] || 1 > args[1]) {
-            return await message.reply(`You only have ⌬ ${balancegiv[0][0]['wallet']}. You can't even afford this much yourself??`)
+            return await message.reply(`You only have \`⌬ ${balancegiv[0][0]['wallet']}\`. You can't even afford this much yourself??`)
         }
 
         const row = new Discord.MessageActionRow()
@@ -67,7 +67,7 @@ module.exports = {
             );
 
         await message.reply({
-            content: `You are about to send ⌬ ${args[1]} to ${user.tag}. Are you sure?`,
+            content: `You are about to send \`⌬ ${args[1]}\` to ${user.tag}. Are you sure?`,
             components: [row]
         });
 
