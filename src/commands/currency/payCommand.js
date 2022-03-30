@@ -71,7 +71,7 @@ module.exports = {
             components: [row]
         });
 
-        const filter = i => i.customId === 'yes' || 'no' && i.user.id === message.author.id;
+        const filter = i => i.customId === 'yes' || 'no';
 
         const collector = message.channel.createMessageComponentCollector({filter, time: 15000});
 
