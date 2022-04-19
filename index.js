@@ -52,7 +52,7 @@ async function main() { // The below three commented-out lines can be uncommente
         console.log("I am ready!");
     });
 
-    client.on("messageCreate", (message) => {
+    client.on("messageCreate", async (message) => {
         if (!prefix.test(message.content) || message.author.bot) return;
         const args = message.content.replace(prefix, '').trim().split(' ');
         const commandName = args.shift().toLowerCase();
