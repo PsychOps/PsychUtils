@@ -35,11 +35,8 @@ module.exports = {
         const balance = await database.query("SELECT wallet, bank FROM balance WHERE user_id = ?", [user.id]);
 
         if (balance[0][0] === undefined) {
-            const embed = new Discord.MessageEmbed()
-                .setAuthor(user.tag, user.avatarURL())
-                .setDescription("This user does not have a profile yet.\n*Start by using commands such as `work`*")
-                .setColor(util.color.red);
-            await message.reply( { embeds: [embed] } );
+            await database.execute("INSERT INTO balance (user_id, wallet, bank) VALUES (?,?,?)", [message.author.id, 0, 0]);
+            return message.reply(`Added your account to our database, you have \`⌬ 0\` on your bank and wallet.`)
         } else {
             wallet = balance[0][0]["wallet"]
             bank = balance[0][0]["bank"]
