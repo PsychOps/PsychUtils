@@ -10,6 +10,7 @@ async function main() { // The below three commented-out lines can be uncommente
     const database = await mysql.createConnection(config.database);
     //create any tables needed if they don't already exist
     await database.execute("CREATE TABLE IF NOT EXISTS `balance` (`user_id` char(18) PRIMARY KEY, `wallet` INT NOT NULL, `bank` INT NOT NULL)")
+    await database.execute("CREATE TABLE IF NOT EXISTS `cooldowns` (`user_id` char(18), `command` TEXT, `expireTime` BIGINT)")
 
     const client = new Client({
         intents: [
@@ -104,11 +105,11 @@ async function main() { // The below three commented-out lines can be uncommente
         setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
         try {
-            command.execute(message, args, client, database); // Add ", database" behind client when using databases
+            await command.execute(message, args, client, database); // Add ", database" behind client when using databases
             console.log(`Command "${command.name}" was executed by ${message.author.tag} (${message.author.id})`)
         } catch (error) {
             console.error(error);
-            message.reply(
+            await message.reply(
                 `there was an error trying to execute that command!\n\`${error}\``
             );
         }
