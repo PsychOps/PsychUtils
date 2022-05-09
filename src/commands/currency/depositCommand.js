@@ -44,8 +44,8 @@ module.exports = {
                     .setAuthor(message.author.tag, message.author.avatarURL())
                     .addFields(
                         /** @type {any} */ {name: 'Deposited', value: `\`⌬ ${onbankall}\``, inline: false},
-                        /** @type {any} */ {name: 'Bank', value: `\`⌬ ${onbankall}\``, inline: true},
-                        /** @type {any} */ {name: 'Wallet', value: `\`⌬ ${offwalletall}\``, inline: true}
+                        /** @type {any} */ {name: 'Wallet', value: `\`⌬ ${offwalletall}\``, inline: true},
+                        /** @type {any} */ {name: 'Bank', value: `\`⌬ ${onbankall}\``, inline: true}
                     )
                     .setColor(util.color.green)
 
@@ -60,8 +60,8 @@ module.exports = {
                     .setAuthor(message.author.tag, message.author.avatarURL())
                     .addFields(
                         /** @type {any} */ {name: 'Deposited', value: `\`⌬ ${args[0]}\``, inline: false},
-                        /** @type {any} */ {name: 'Bank', value: `\`⌬ ${onbank}\``, inline: true},
-                        /** @type {any} */ {name: 'Wallet', value: `\`⌬ ${offwallet}\``, inline: true}
+                        /** @type {any} */ {name: 'Wallet', value: `\`⌬ ${offwallet}\``, inline: true},
+                        /** @type {any} */ {name: 'Bank', value: `\`⌬ ${onbank}\``, inline: true}
                     )
                     .setColor(util.color.green);
 
