@@ -32,7 +32,7 @@ module.exports = {
                 .setColor(util.color.green);
             await message.reply({ embeds: [embed] });
 
-            const dates = Date.now() / 1000 + 86400
+            const dates = Date.now() / 1000 + 864000
             await database.execute("INSERT INTO cooldowns (user_id, command, expireTime) VALUES (?,?,?)", [message.author.id, 'daily', dates]);
         }
         else {
