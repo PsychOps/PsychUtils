@@ -109,9 +109,14 @@ async function main() { // The below three commented-out lines can be uncommente
             console.log(`Command "${command.name}" was executed by ${message.author.tag} (${message.author.id})`)
         } catch (error) {
             console.error(error);
-            await message.reply(
-                `there was an error trying to execute that command!\n\`${error}\``
-            );
+            if (error.message = 'Unknown Emoji') {
+                await message.reply("Unfortunately, reaction roles do not support custom emojis yet.");
+
+            } else {
+                await message.reply(
+                    `there was an error trying to execute that command!\n\`${error}\``
+                );
+            }
         }
     });
     await client.login(config.token);
