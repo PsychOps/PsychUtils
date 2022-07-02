@@ -109,7 +109,7 @@ async function main() { // The below three commented-out lines can be uncommente
             console.log(`Command "${command.name}" was executed by ${message.author.tag} (${message.author.id})`)
         } catch (error) {
             console.error(error);
-            if (error.message = 'Unknown Emoji') {
+            if (error.message === 'Unknown Emoji') {
                 await message.reply("I'm not in the server that has that emoji. If you want me to be able to use it, upload it to this server.");
 
             } else {
