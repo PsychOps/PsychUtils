@@ -1,3 +1,5 @@
+const { MessageReaction } = require("discord.js");
+
 module.exports = {
     name: "reactionroles",
 
@@ -5,30 +7,43 @@ module.exports = {
 
     description: "Set up reaction roles",
 
+    usage: "#channel messageID :emoji: @role OR roleID",
+
     cooldown: 10,
 
     async execute(message, args, client) {
-        //check if author has manage messages permissions
         if (!message.member.permissions.has("MANAGE_MESSAGES")) {
-            return message.reply("You do not have the required permissions to use this command!");
+            return await message.reply("You do not have the required permissions to use this command!");
         }
-        if (message.channel.type === "dm") {
-            message.reply("Please use this command in a server.");
-            return;
-        }
-
-        //get channel from the args
-        var reactchannel = message.mentions.channels.first().id;
-        if (!reactchannel) {
-            message.reply("Please mention a channel!");
-            return;
+        if (!message.mentions.channels.first()) {
+            return await message.reply("Please mention a channel!");
         }
 
-        reactchannel = await client.channels.fetch(reactchannel)
-        var reactID = args[1]
-        console.log(reactID)
-        reactmessage1 = await reactchannel.messages.fetch(reactID)
-        console.log(reactmessage1.content)
-        await reactmessage1.react('😂');
+        //fetch channel
+        const reactchannel = await client.channels.fetch(message.mentions.channels.first().id);
+
+        //fetch message
+        const reactmessage = await reactchannel.messages.fetch(args[1])
+
+        //get the role
+        let role;
+        if (!message.mentions.roles.first()) {
+            role = args[3]
+        } else {
+            role = message.mentions.roles.first().id
+        }
+
+        //make sure the role actually exists
+        const guild = await message.guild.fetch()
+        if (!await guild.roles.resolve(role)) {
+            return message.reply("Failed to find that role!")
+        }
+
+        await reactmessage.react(args[2]);
+        if (reactchannel === message.channel) {
+            await reactmessage.reply("Reaction successfully added!")
+        } else {
+            await message.reply("Reaction successfully added!")
+        }
     },
 };
