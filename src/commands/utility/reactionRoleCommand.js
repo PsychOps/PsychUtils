@@ -17,38 +17,18 @@ module.exports = {
             return;
         }
 
-        const filter = (m) => m.author.id === message.author.id;
         //get channel from the args
-        const reactchannel = message.mentions.channels.first();
+        var reactchannel = message.mentions.channels.first().id;
         if (!reactchannel) {
             message.reply("Please mention a channel!");
             return;
         }
 
-        const collector = message.channel.createMessageCollector({ filter, time: 300000 });
-
-        let reactroles = [];
-        let reactrolesemoji = [];
-
-        let cancelled = false;
-        while (cancelled === false) {
-            console.log("while loop entered")
-            message.channel.send("Please mention the role you want to assign to the reactions");
-            const collector = message.channel.createMessageCollector({ filter, time: 300000, max: 1 });
-
-            collector.on('collect', m => {
-                console.log(`Collected ${m.content}`);
-                if (m.content == "cancel") {
-                    cancelled = true;
-                }
-                m.reply("yo")
-            });
-            // collector.on('end', collected => {
-            //     console.log(`Collected ${collected.size} items`);
-            // });
-        }
-        //AFTER WHILE
-        let channel = await reactchannel.fetch()
-        await channel.send("Hi")
+        reactchannel = await client.channels.fetch(reactchannel)
+        var reactID = args[1]
+        console.log(reactID)
+        reactmessage1 = await reactchannel.messages.fetch(reactID)
+        console.log(reactmessage1.content)
+        await reactmessage1.react('😂');
     },
 };
