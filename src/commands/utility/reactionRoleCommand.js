@@ -1,4 +1,6 @@
 const { MessageReaction } = require("discord.js");
+const config = require("../../../config.json");
+const mysql = require('mysql2/promise')
 
 module.exports = {
     name: "reactionroles",
@@ -45,5 +47,10 @@ module.exports = {
         } else {
             await message.reply("Reaction successfully added!")
         }
+
+        console.log(args[2])
+        const database = await mysql.createConnection(config.database);
+        await database.execute("INSERT INTO reactionroles (message_id, reaction, role_id, guild_id) VALUES (?, ?, ?, ?)", [reactmessage.id, args[2], role, message.guild.id]);
+        await database.end();
     },
 };
