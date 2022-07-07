@@ -11,7 +11,7 @@ async function main() { // The below three commented-out lines can be uncommente
     //create any tables needed if they don't already exist
     await database.execute("CREATE TABLE IF NOT EXISTS `balance` (`user_id` char(18) PRIMARY KEY, `wallet` INT NOT NULL, `bank` INT NOT NULL)")
     await database.execute("CREATE TABLE IF NOT EXISTS `cooldowns` (`user_id` char(18), `command` TEXT, `expireTime` BIGINT)")
-    await database.execute("CREATE TABLE IF NOT EXISTS `reactionroles` `message_id` char(18), `reaction` char(18), `role_id` char(18), `guild_id` char(18)")
+    await database.execute("CREATE TABLE IF NOT EXISTS `reactionroles` (`message_id` char(18), `reaction` char(54), `role_id` char(18), `guild_id` char(18))")
 
     const client = new Client({
         intents: [
